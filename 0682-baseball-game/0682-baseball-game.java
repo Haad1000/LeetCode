@@ -1,7 +1,6 @@
 class Solution {
     public int calPoints(String[] operations) {
 
-
         Stack<Integer> stack = new Stack<>();
 
         for (String x : operations) {

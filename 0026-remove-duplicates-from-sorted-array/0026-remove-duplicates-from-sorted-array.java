@@ -15,7 +15,7 @@ class Solution {
             } 
         }
 
-        System.arraycopy(newNums, 0, nums, 0, newNums.length);
+        System.arraycopy(newNums, 0, nums, 0, returnValue);
 
         return returnValue;
     }

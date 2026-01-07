@@ -1,34 +1,41 @@
 class MinStack {
-    ArrayList<Integer> minStack = new ArrayList<Integer>();
-    ArrayList<Integer> list = new ArrayList<Integer>();
+
+    Stack<Integer> stack;
 
     public MinStack() {
+        stack = new Stack<>();
     }
     
     public void push(int val) {
-        list.add(val);
-        if (minStack.isEmpty() || val <= minStack.get(minStack.size() - 1)) {
-            minStack.add(val);
-        }
+        stack.push(val);
     }
     
     public void pop() {
-        int len = list.size();
-        int val = list.get(len - 1);
-        list.remove(len - 1);
-        if (val == minStack.get(minStack.size() - 1)) {
-            minStack.remove(minStack.size() - 1);
-        }
+        stack.pop();
     }
     
     public int top() {
-        int len = list.size();
-        int val = list.get(len - 1);
-        return val;
+        return stack.peek();
     }
     
     public int getMin() {
-        return minStack.get(minStack.size() - 1);
+        Stack<Integer> stackCopy = (Stack<Integer>) stack.clone();
+        int min;
+        if (stackCopy.size() > 0) {
+            min = stackCopy.pop();
+        } else {
+            return 0;
+        }
+        while (stackCopy.size() > 0) {
+            if (stackCopy.peek() < min) {
+                min = stackCopy.pop();
+            }
+            else {
+                stackCopy.pop();
+            }
+        }
+
+        return min;
     }
 }
 

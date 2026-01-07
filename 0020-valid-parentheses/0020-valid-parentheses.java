@@ -1,61 +1,54 @@
 class Solution {
     public boolean isValid(String s) {
-        Stack<Character> stack = new Stack<>();
-        
-        for (int i = 0; i < s.length(); i++) {
-            stack.push(s.charAt(i));
-        }
+        Stack<Character> bracket = new Stack<>();
+        Stack<Character> curly = new Stack<>();
+        Stack<Character> square = new Stack<>();
+        Stack<Character> overall = new Stack<>();
 
-        int x = s.length() - 1;
-        int numCurve = 0;
-        int numCurl = 0;
-        int numBar = 0;
-        Stack<Character> order = new Stack<>();
-
-        while (x > -1) {
-            char a = stack.pop();
-            if ((a == '(' || a == '{' || a == '[') && x == s.length() - 1) {
-                return false;
-            }
-            else if (a == ')') {
-                numCurve++;
-                order.push(a);
-            }
-            else if (a == '}') {
-                numCurl++;
-                order.push(a);
-            }
-            else if (a == ']') {
-                numBar++;
-                order.push(a);
-            }
-            else if (order.size() > 0) {
-                if (a == '(' && order.peek() == ')') {
-                    numCurve--;
-                    order.pop();
+        for (char x : s.toCharArray()) {
+            if (x == '(') {
+                bracket.push(x);
+                overall.push(x);
+            } else if (x == '{') {
+                curly.push(x);
+                overall.push(x);
+            } else if (x == '[') {
+                square.push(x);
+                overall.push(x);
+            } else if (x == ')') {
+                if (bracket.size() < 1) {
+                    return false;
+                } else if (overall.peek() == bracket.peek()) {
+                    overall.pop();
+                    bracket.pop();
+                } else {
+                    return false;
                 }
-                else if (a == '{' && order.peek() == '}') {
-                    numCurl--;
-                    order.pop();
+            } else if (x == '}') {
+                if (curly.size() < 1) {
+                    return false;
+                } else if (overall.peek() == curly.peek()) {
+                    overall.pop();
+                    curly.pop();
+                } else {
+                    return false;
                 }
-                else if (a == '[' && order.peek() == ']') {
-                    numBar--;
-                    order.pop();
-                }
-                else {
+            } else if (x == ']') {
+                if (square.size() < 1) {
+                    return false;
+                } else if (overall.peek() == square.peek()) {
+                    overall.pop();
+                    square.pop();
+                } else {
                     return false;
                 }
             }
-            else {
-                return false;
-            }
-            x--;
         }
-        if (numCurve == 0 && numCurl == 0 && numBar == 0) {
-            return true;
-        }
-        else {
+
+        if (overall.size() > 0) {
             return false;
+        } else {
+            return true;
         }
     }
 }

@@ -10,46 +10,52 @@
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        if (list1 == null) {
+
+        ListNode outputList = null;
+        ListNode outputHead = null;
+
+        if (list1 == null && list2 == null) {
+            return null;
+        } else if (list1 == null) {
             return list2;
-        }
-        else if (list2 == null) {
+        } else if (list2 == null) {
             return list1;
-        }
+        } else {
 
-        ListNode sorted = new ListNode();
-        if (list1.val < list2.val) {
-            sorted = list1;
-            list1 = list1.next;
-        }
-        else {
-            sorted = list2;
-            list2 = list2.next;
-        }
-        ListNode temp = sorted;
-
-        while (list1 != null && list2 != null) {
-            if (list1.val < list2.val) {
-                temp.next = list1;
+            if (list1.val <= list2.val) {
+                outputList = list1;
                 list1 = list1.next;
-                temp = temp.next;
-            }
-            else {
-                temp.next = list2;
+                outputHead = outputList;
+            } else if (list2.val < list1.val) {
+                outputList = list2;
                 list2 = list2.next;
-                temp = temp.next;
+                outputHead = outputList;
+            }
+
+            while (list1 != null && list2 != null) {
+                if (list1.val <= list2.val) {
+                    outputList.next = list1;
+                    list1 = list1.next;
+                    outputList = outputList.next;
+                }
+                else {
+                    outputList.next = list2;
+                    list2 = list2.next;
+                    outputList = outputList.next;
+                }
+            }
+            while (list1 != null) {
+                outputList.next = list1;
+                list1 = list1.next;
+                outputList = outputList.next;
+            }
+            while (list2 != null) {
+                outputList.next = list2;
+                list2 = list2.next;
+                outputList = outputList.next;
             }
         }
-        while (list1 != null) {
-            temp.next = list1;
-            list1 = list1.next;
-            temp = temp.next;
-        }
-        while (list2 != null) {
-            temp.next = list2;
-            list2 = list2.next;
-            temp = temp.next;
-        }
-        return sorted;
+        return outputHead;
+
     }
 }
